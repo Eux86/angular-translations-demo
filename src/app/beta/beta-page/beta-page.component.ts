@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { UserConfigurationService } from '../../user-configuration.service';
 
 @Component({
   selector: 'app-beta-page',
@@ -8,9 +9,14 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class BetaPageComponent implements OnInit {
 
-  constructor(private translate: TranslateService) {
-    translate.setDefaultLang('en');
-   }
+  constructor(
+    private readonly translator:TranslateService,
+    private readonly userConfiguration: UserConfigurationService
+  ) { 
+    translator.setDefaultLang(userConfiguration.getLanguage());
+
+    userConfiguration.languageChange$.subscribe(language=>translator.setDefaultLang(language));
+  }
 
   ngOnInit() {
   }

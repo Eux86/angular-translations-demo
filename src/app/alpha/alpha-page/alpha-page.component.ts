@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { UserConfigurationService } from '../../user-configuration.service';
 
 @Component({
   selector: 'app-alpha-page',
@@ -7,7 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlphaPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private readonly translator:TranslateService,
+    private readonly userConfiguration: UserConfigurationService
+  ) { 
+    translator.setDefaultLang(userConfiguration.getLanguage());
+
+    userConfiguration.languageChange$.subscribe(language=>translator.setDefaultLang(language));
+  }
 
   ngOnInit() {
   }
